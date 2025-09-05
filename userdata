@@ -1,0 +1,21 @@
+#!/bin/bash
+# Update system
+apt update -y
+apt install -y apache2 git curl
+
+# Start Apache
+systemctl start apache2
+systemctl enable apache2
+
+# Clean default web files
+rm -rf /var/www/html/*
+
+# Clone repo directly into /tmp
+git clone --depth=1 https://github.com/awsdevopskiran/fasion-website.git /tmp/fasion-website
+
+# Copy correct folder (food-website) into Apache web root
+cp -r /tmp/fasion-website/food-website/* /var/www/html/
+
+# Fix permissions
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
